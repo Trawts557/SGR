@@ -9,6 +9,6 @@ namespace SGR.Domain.Entities.Restaurants_and_Products
     public class MenuCategory
     {
         public int IdCategory { get; set ; }
-        public string Name { get; set ; }
+        public string? Name { get; set ; }
 }
 }

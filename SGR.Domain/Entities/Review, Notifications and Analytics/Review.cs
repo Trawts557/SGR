@@ -11,7 +11,7 @@ namespace SGR.Domain.Entities.Review__Notifications_and_Analytics
         public int IdReview { get; set ; }
         public int IdCustomer { get; set ; }
         public int IdRestaurant { get; set; }
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
         public int Rating { get; set; }
         public DateTime Timestamp { get; set; }
 }

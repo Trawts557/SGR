@@ -3,7 +3,6 @@ namespace SGR.Domain.Base
 {
     public abstract class AppUser : AuditEntity
     {
-        public required int IdUser { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
         public string FullName => $"{FirstName} {LastName}";

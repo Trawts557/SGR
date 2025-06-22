@@ -4,15 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SGR.Domain.Entities.Restaurants_and_Products
+namespace SGR.Application.Dtos.Restaurant
 {
-    public class Restaurant
+    public record ModifyRestaurantDTO
     {
         public int IdRestaurant { get; set; }
         public string? Name { get; set; }
-        public string? Address { get; set; }
-        public string? Specialty { get; set; }
-        public int IdOwner { get; set; }
-
+        public string? Description { get; set; }
+        public string? UpdatedBy { get; set; }
     }
 }
