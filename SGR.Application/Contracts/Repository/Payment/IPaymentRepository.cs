@@ -1,4 +1,5 @@
-﻿using SGR.Domain.Base;
+﻿using SGR.Application.Dtos.Payment;
+using SGR.Domain.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace SGR.Application.Contracts.Repository.Payment
 {
     public interface IPaymentRepository
     {
-        /*
+        
         Task<OperationResult> ProcessAsync(ProcessPaymentDTO dto);
         Task<OperationResult> GetByOrderIdAsync(int orderId);
-        */
+        
     }
 }

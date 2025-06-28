@@ -12,7 +12,7 @@ namespace SGR.Application.Interfaces.Repository
     public interface IRestaurantRepository 
     {
         Task<OperationResult> GetByIdAsync(int id);
-        Task<OperationResult> GetAllAsync();
+        Task<OperationResult<IEnumerable<GetRestaurantDTO>>> GetAllAsync();
         Task<OperationResult> AddAsync(CreateRestaurantDTO createRestaurantDTO);
         Task<OperationResult> UpdateAsync(ModifyRestaurantDTO modifyRestaurantDTO);
         Task<OperationResult> DeleteAsync(DisableRestaurantDTO disableRestaurantDTO);

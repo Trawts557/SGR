@@ -1,4 +1,5 @@
-﻿using SGR.Domain.Base;
+﻿using SGR.Application.Dtos.Review__Notifications__Analytics;
+using SGR.Domain.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace SGR.Application.Contracts.Repository
 {
     public interface INotificationRepository
     {
-        /*
+        
         Task<OperationResult> AddAsync(CreateNotificationDTO dto);
         Task<OperationResult> MarkAsReadAsync(int notificationId);
         Task<OperationResult> GetByUserIdAsync(int userId);
-        */
+        
     }
 }

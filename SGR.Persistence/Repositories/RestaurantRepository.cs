@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI.Common;
@@ -17,14 +18,18 @@ namespace SGR.Persistence.Repositories
     {
 
         private readonly string _connectionString;
+        public readonly IConfiguration _configuration;
         private readonly ILogger<RestaurantRepository> _logger;
 
         //Constructor
-        public RestaurantRepository(string connectionString, ILogger<RestaurantRepository> logger) 
+        public RestaurantRepository(IConfiguration configuration, ILogger<RestaurantRepository> logger)
         {
-            _connectionString = connectionString;
+            _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnection")
+                ?? throw new ArgumentNullException(nameof(_connectionString), "La cadena de conexión no está configurada.");
             _logger = logger;
         }
+
 
         //AÑADIR RESTAURANTE
         public async Task<OperationResult> AddAsync(CreateRestaurantDTO createRestaurantDTO)
@@ -155,9 +160,10 @@ namespace SGR.Persistence.Repositories
         }
 
         //OBTENER TODOS LOS RESTAURANTES
-        public async Task<OperationResult<List<GetRestaurantDTO>>> GetAllAsync()
+        public async Task<OperationResult<IEnumerable<GetRestaurantDTO>>> GetAllAsync()
+
         {
-            var result = new OperationResult<List<GetRestaurantDTO>>();
+            var result = new OperationResult<IEnumerable<GetRestaurantDTO>>();
             var restaurants = new List<GetRestaurantDTO>();
 
             try
@@ -283,11 +289,6 @@ namespace SGR.Persistence.Repositories
             }
 
             return result;
-        }
-
-        Task<OperationResult> IRestaurantRepository.GetAllAsync()
-        {
-            throw new NotImplementedException();
         }
 
         Task<OperationResult> IRestaurantRepository.GetByIdAsync(int id)

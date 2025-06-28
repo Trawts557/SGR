@@ -7,9 +7,9 @@ using SGR.Domain.Entities.Users;
 
 namespace SGR.Persistence.IContext
 {
-    public class SGR : DbContext
+    public class SGR_DB : DbContext
     {
-        public SGR(DbContextOptions<SGR> options)
+        public SGR_DB(DbContextOptions<SGR_DB> options)
             : base(options) { }
 
         public DbSet<Restaurant> Restaurants { get; set; }

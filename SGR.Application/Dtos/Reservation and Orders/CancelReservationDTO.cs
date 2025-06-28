@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SGR.Application.Dtos.Restaurant_and_Products.Products
+namespace SGR.Application.Dtos.Reservation_and_Orders
 {
-    public record DisableProductDTO
+    public record CancelReservationDTO
     {
-        public int IdProduct { get; set; }
+        public int IdReservation { get; set; }
         public string? DeletedBy { get; set; }
     }
 }

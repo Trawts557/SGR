@@ -9,10 +9,10 @@ namespace SGR.Persistence.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        protected readonly IContext.SGR _context;
+        protected readonly IContext.SGR_DB _context;
         protected readonly DbSet<T> _dbSet;
 
-        public BaseRepository(IContext.SGR context)
+        public BaseRepository(IContext.SGR_DB context)
         {
             _context = context;
             _dbSet = _context.Set<T>();

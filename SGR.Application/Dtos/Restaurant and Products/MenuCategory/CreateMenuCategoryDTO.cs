@@ -11,5 +11,6 @@ namespace SGR.Application.Dtos.Restaurant
         public string Name { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public int RestaurantId { get; set; }
+        public string? CreatedBy { get; set; }
     }
 }

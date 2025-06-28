@@ -1,4 +1,5 @@
-﻿using SGR.Domain.Base;
+﻿using SGR.Application.Dtos.User;
+using SGR.Domain.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,20 +8,12 @@ using System.Threading.Tasks;
 
 namespace SGR.Application.Contracts.Repository
 {
-    public interface ICustomerRepository
+    public interface IUserRepository
     {
-        /*
-        Task<OperationResult> RegisterAsync(RegisterCustomerDTO dto);
+        
         Task<OperationResult> GetByIdAsync(int id);
-    }
-    public interface IOwnerRepository
-    {
-        Task<OperationResult> RegisterAsync(RegisterOwnerDTO dto);
-        Task<OperationResult> GetByIdAsync(int id);
-    }
-    public interface IAdminRepository {
-        Task<OperationResult> RegisterAsync(RegisterAdminDTO dto);
-        Task<OperationResult> GetByIdAsync(int id);
-        */
+        Task<OperationResult> RegisterCustomerAsync(RegisterCustomerDTO dto);
+        Task<OperationResult> RegisterOwnerAsync(RegisterOwnerDTO dto);
+        Task<OperationResult> RegisterAdminAsync(RegisterAdminDTO dto);
     }
 }

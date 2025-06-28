@@ -1,4 +1,5 @@
-﻿using SGR.Domain.Base;
+﻿using SGR.Application.Dtos.Review__Notifications__Analytics.Review;
+using SGR.Domain.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace SGR.Application.Contracts.Repository
 {
     public interface IReviewRepository
     {
-        /*
+        
         Task<OperationResult> AddAsync(CreateReviewDTO dto);
         Task<OperationResult> UpdateAsync(ModifyReviewDTO dto);
         Task<OperationResult> DeleteAsync(int id);
         Task<OperationResult> GetByRestaurantIdAsync(int restaurantId);
-        */
+       
     }
 }
