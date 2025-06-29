@@ -11,7 +11,7 @@ namespace SGR.Application.Interfaces.Repository
 {
     public interface IRestaurantRepository 
     {
-        Task<OperationResult> GetByIdAsync(int id);
+        Task<OperationResult<GetRestaurantDTO>> GetByIdAsync(int id);
         Task<OperationResult<IEnumerable<GetRestaurantDTO>>> GetAllAsync();
         Task<OperationResult> AddAsync(CreateRestaurantDTO createRestaurantDTO);
         Task<OperationResult> UpdateAsync(ModifyRestaurantDTO modifyRestaurantDTO);

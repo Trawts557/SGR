@@ -10,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 builder.Services.AddTransient<IRestaurantRepository, RestaurantRepository>();
 
-//builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
-//builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
 
 
 builder.Services.AddControllers();

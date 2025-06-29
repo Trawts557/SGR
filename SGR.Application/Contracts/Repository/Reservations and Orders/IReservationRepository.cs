@@ -14,8 +14,8 @@ namespace SGR.Application.Contracts.Repository.Reservations_and_Orders
         Task<OperationResult> AddAsync(CreateReservationDTO dto);
         Task<OperationResult> UpdateAsync(ModifyReservationDTO dto);
         Task<OperationResult> CancelAsync(CancelReservationDTO dto);
-        Task<OperationResult> GetAllAsync();
-        Task<OperationResult> GetByIdAsync(int id);
+        Task<OperationResult<IEnumerable<GetReservationDTO>>> GetAllAsync();
+        Task<OperationResult<GetReservationDTO>> GetByIdAsync(int id);
         
     }
 }

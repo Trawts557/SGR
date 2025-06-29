@@ -1,64 +1,54 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SGR.Application.Dtos.Restaurant;
 using SGR.Application.Interfaces.Repository;
+using SGR.Domain.Base;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-namespace SGR.Controllers
+namespace SGR.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class RestaurantController : ControllerBase
     {
-        private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IRestaurantRepository _repository;
 
-        public RestaurantController(IRestaurantRepository restaurantRepository)
+        public RestaurantController(IRestaurantRepository repository)
         {
-            _restaurantRepository = restaurantRepository;
+            _repository = repository;
         }
 
-        // GET: api/<RestaurantController>
-        [HttpGet("GetRestaurant")]
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateRestaurantDTO dto)
+        {
+            var result = await _repository.AddAsync(dto);
+            return Ok(result);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _restaurantRepository.GetAllAsync();
-
-            if (!result.IsSuccess)
-                return BadRequest(result.Message);
-
-            return Ok(result.Data); // Aquí devuelves la lista de restaurantes
+            var result = await _repository.GetAllAsync();
+            return Ok(result);
         }
 
-        // GET api/<RestaurantController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            return "value";
+            var result = await _repository.GetByIdAsync(id);
+            return Ok(result);
         }
 
-        // POST api/<RestaurantController>
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateRestaurantDTO restaurantDto)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] ModifyRestaurantDTO dto)
         {
-            var result = await _restaurantRepository.AddAsync(restaurantDto);
-
-            if (!result.IsSuccess)
-                return BadRequest(result.Message);
-
-            return Ok("Restaurante creado exitosamente.");
+            var result = await _repository.UpdateAsync(dto);
+            return Ok(result);
         }
 
-
-        // PUT api/<RestaurantController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] DisableRestaurantDTO dto)
         {
-        }
-
-        // DELETE api/<RestaurantController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var result = await _repository.DeleteAsync(dto);
+            return Ok(result);
         }
     }
 }
