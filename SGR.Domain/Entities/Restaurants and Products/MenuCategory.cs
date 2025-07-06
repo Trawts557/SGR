@@ -10,5 +10,7 @@ namespace SGR.Domain.Entities.Restaurants_and_Products
     {
         public int IdCategory { get; set ; }
         public string? Name { get; set ; }
-}
+        public string? Description { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
 }

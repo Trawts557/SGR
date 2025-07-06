@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace SGR.Application.Dtos.User
 {
-    public record RegisterCustomerDTO
+    namespace SGR.Application.Dtos.Users
     {
+        public record RegisterCustomerDTO
+        {
+            public string Name { get; set; } = null!;
+            public string LastName { get; set; } = null!;
+            public string Email { get; set; } = null!;
+            public string Password { get; set; } = null!;
+            public string CreatedBy { get; set; } = null!;
+            public DateTime CreatedAt { get; set; }
+        }
     }
+
 }

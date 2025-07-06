@@ -8,9 +8,10 @@ namespace SGR.Application.Dtos.Restaurant
 {
     public record CreateMenuCategoryDTO
     {
-        public string Name { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; } 
         public int RestaurantId { get; set; }
-        public string? CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
+
 }

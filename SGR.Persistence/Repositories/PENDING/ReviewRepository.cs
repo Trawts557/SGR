@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SGR.Persistence.Repositories
+namespace SGR.Persistence.Repositories.PENDING
 {
-    internal class OrderItemRepository
+    internal class ReviewRepository
     {
     }
 }

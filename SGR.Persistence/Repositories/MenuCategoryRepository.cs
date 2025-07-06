@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using SGR.Application.Contracts.Repository;
 using SGR.Application.Dtos.Restaurant;
-using SGR.Application.Interfaces.Repository;
+using SGR.Application.Dtos.Restaurant_and_Products.MenuCategory;
 using SGR.Domain.Base;
 using System.Data;
 
@@ -13,9 +14,11 @@ namespace SGR.Persistence.Repositories
         private readonly string _connectionString;
         private readonly ILogger<MenuCategoryRepository> _logger;
 
-        public MenuCategoryRepository(string connectionString, ILogger<MenuCategoryRepository> logger)
+        public MenuCategoryRepository(IConfiguration configuration, ILogger<MenuCategoryRepository> logger)
         {
-            _connectionString = connectionString;
+            _connectionString = configuration.GetConnectionString("DefaultConnection")
+                ?? throw new ArgumentNullException(nameof(_connectionString), "La cadena de conexión no está configurada.");
+
             _logger = logger;
         }
 
@@ -38,9 +41,16 @@ namespace SGR.Persistence.Repositories
                 using var command = new MySqlCommand("sp_CreateMenuCategory", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@Name", dto.Name);
-                command.Parameters.AddWithValue("@RestaurantId", dto.RestaurantId);
-                command.Parameters.AddWithValue("@CreatedAt", dto.CreatedAt);
+                command.Parameters.AddWithValue("@p_Name", dto.Name);
+                command.Parameters.AddWithValue("@p_Description", dto.Description);
+                command.Parameters.AddWithValue("@p_RestaurantId", dto.RestaurantId);
+                command.Parameters.AddWithValue("@p_CreatedAt", dto.CreatedAt);
+
+                var pResult = new MySqlParameter("@pResult", MySqlDbType.VarChar, 255)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(pResult);
 
                 await connection.OpenAsync();
                 var affected = await command.ExecuteNonQueryAsync();
@@ -85,9 +95,16 @@ namespace SGR.Persistence.Repositories
                 using var command = new MySqlCommand("sp_UpdateMenuCategory", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@Id", dto.IdMenuCategory);
-                command.Parameters.AddWithValue("@Name", dto.Name);
-                command.Parameters.AddWithValue("@UpdatedBy", dto.UpdatedBy);
+                command.Parameters.AddWithValue("@p_Id", dto.IdMenuCategory);
+                command.Parameters.AddWithValue("@p_Name", dto.Name);
+                command.Parameters.AddWithValue("@p_Description", dto.Description);
+                command.Parameters.AddWithValue("@p_UpdatedBy", dto.UpdatedBy);
+
+                var pResult = new MySqlParameter("@pResult", MySqlDbType.VarChar, 255)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(pResult);
 
                 await connection.OpenAsync();
                 var affected = await command.ExecuteNonQueryAsync();
@@ -125,8 +142,14 @@ namespace SGR.Persistence.Repositories
                 using var command = new MySqlCommand("sp_DisableMenuCategory", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@Id", dto.IdMenuCategory);
-                command.Parameters.AddWithValue("@DeletedBy", dto.DeletedBy);
+                command.Parameters.AddWithValue("@p_Id", dto.IdMenuCategory);
+                command.Parameters.AddWithValue("@p_DeletedBy", dto.DeletedBy);
+
+                var pResult = new MySqlParameter("@pResult", MySqlDbType.VarChar, 255)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(pResult);
 
                 await connection.OpenAsync();
                 var affected = await command.ExecuteNonQueryAsync();
@@ -152,14 +175,92 @@ namespace SGR.Persistence.Repositories
             return result;
         }
 
-        public Task<OperationResult> GetAllAsync()
+        public async Task<OperationResult<IEnumerable<GetMenuCategoryDTO>>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var result = new OperationResult<IEnumerable<GetMenuCategoryDTO>>();
+            var categories = new List<GetMenuCategoryDTO>();
+
+            try
+            {
+                _logger.LogInformation("Obteniendo todas las categorías de menú");
+
+                using var connection = new MySqlConnection(_connectionString);
+                using var command = new MySqlCommand("sp_GetAllMenuCategories", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                await connection.OpenAsync();
+                using var reader = await command.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                {
+                    categories.Add(new GetMenuCategoryDTO(
+                        reader.GetInt32("IdMenuCategory"),
+                        reader.GetString("Name"),
+                        reader.GetString("Description"),
+                        reader.GetInt32("RestaurantId"),
+                        reader.GetDateTime("CreatedAt")
+                    ));
+                }
+
+                result.IsSuccess = true;
+                result.Message = "Categorías obtenidas correctamente";
+                result.Data = categories;
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"Error al obtener categorías: {ex.Message}";
+                _logger.LogError(ex, "Error en GetAllAsync");
+            }
+
+            return result;
         }
 
-        public Task<OperationResult> GetByIdAsync(int id)
+        public async Task<OperationResult<GetMenuCategoryDTO>> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var result = new OperationResult<GetMenuCategoryDTO>();
+
+            try
+            {
+                _logger.LogInformation("Obteniendo categoría de menú por ID: {IdMenuCategory}", id);
+
+                using var connection = new MySqlConnection(_connectionString);
+                using var command = new MySqlCommand("sp_GetMenuCategoryById", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@p_Id", id);
+
+                await connection.OpenAsync();
+                using var reader = await command.ExecuteReaderAsync();
+
+                if (await reader.ReadAsync())
+                {
+                    var category = new GetMenuCategoryDTO(
+                        reader.GetInt32("IdMenuCategory"),
+                        reader.GetString("Name"),
+                        reader.GetString("Description"),
+                        reader.GetInt32("RestaurantId"),
+                        reader.GetDateTime("CreatedAt")
+                    );
+
+                    result.IsSuccess = true;
+                    result.Data = category;
+                }
+                else
+                {
+                    result.IsSuccess = false;
+                    result.Message = "Categoría no encontrada";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"Error al obtener la categoría: {ex.Message}";
+                _logger.LogError(ex, "Error en GetByIdAsync");
+            }
+
+            return result;
         }
+
+
     }
 }

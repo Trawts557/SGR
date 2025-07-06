@@ -1,43 +1,74 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SGR.Application.Contracts.Repository;
+using SGR.Application.Dtos.Restaurant;
+using SGR.Application.Dtos.Restaurant_and_Products.MenuCategory;
+using SGR.Domain.Base;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace SGR.Controllers
+namespace SGR.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class MenuCategoryController : ControllerBase
     {
-        // GET: api/<MenuCategoryController>
+        private readonly IMenuCategoryRepository _menuCategoryRepository;
+        private readonly ILogger<MenuCategoryController> _logger;
+
+        public MenuCategoryController(IMenuCategoryRepository menuCategoryRepository, ILogger<MenuCategoryController> logger)
+        {
+            _menuCategoryRepository = menuCategoryRepository;
+            _logger = logger;
+        }
+
+        /// <summary>
+        /// Obtiene todas las categorías de menú
+        /// </summary>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<OperationResult<IEnumerable<GetMenuCategoryDTO>>>> GetAll()
         {
-            return new string[] { "value1", "value2" };
+            var result = await _menuCategoryRepository.GetAllAsync();
+            return Ok(result);
         }
 
-        // GET api/<MenuCategoryController>/5
+        /// <summary>
+        /// Obtiene una categoría de menú por ID
+        /// </summary>
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<OperationResult<GetMenuCategoryDTO>>> GetById(int id)
         {
-            return "value";
+            var result = await _menuCategoryRepository.GetByIdAsync(id);
+            return Ok(result);
         }
 
-        // POST api/<MenuCategoryController>
+        /// <summary>
+        /// Crea una nueva categoría de menú
+        /// </summary>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Create([FromBody] CreateMenuCategoryDTO dto)
         {
+            var result = await _menuCategoryRepository.AddAsync(dto);
+            return Ok(result);
         }
 
-        // PUT api/<MenuCategoryController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        /// <summary>
+        /// Actualiza una categoría de menú
+        /// </summary>
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] ModifyMenuCategoryDTO dto)
         {
+            var result = await _menuCategoryRepository.UpdateAsync(dto);
+            return Ok(result);
         }
 
-        // DELETE api/<MenuCategoryController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        /// <summary>
+        /// Elimina (desactiva) una categoría de menú
+        /// </summary>
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] DisableMenuCategoryDTO dto)
         {
+            var result = await _menuCategoryRepository.DeleteAsync(dto);
+            return Ok(result);
         }
+
     }
 }

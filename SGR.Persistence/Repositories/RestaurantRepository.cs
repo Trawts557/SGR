@@ -65,24 +65,32 @@ namespace SGR.Persistence.Repositories
             var result = new OperationResult();
             try
             {
+                _logger.LogInformation("Deshabilitando restaurante ID: {IdRestaurant}", dto.IdRestaurant);
+
                 using var connection = new MySqlConnection(_connectionString);
                 using var command = new MySqlCommand("sp_DisableRestaurant", connection);
-                command.CommandType = CommandType.StoredProcedure;
 
+                command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@p_Id", dto.IdRestaurant);
                 command.Parameters.AddWithValue("@p_DeletedBy", dto.DeletedBy);
 
-                await connection.OpenAsync();
-                var affected = await command.ExecuteNonQueryAsync();
+                var pResult = new MySqlParameter("@pResult", MySqlDbType.VarChar, 255)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(pResult);
 
-                result.IsSuccess = affected > 0;
-                result.Message = affected > 0 ? "Restaurante deshabilitado" : "No se encontró el restaurante";
+                await connection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
+
+                result.IsSuccess = true;
+                result.Message = pResult.Value?.ToString() ?? "Restaurante deshabilitado correctamente";
             }
             catch (Exception ex)
             {
-                result.IsSuccess = false;
-                result.Message = $"Error: {ex.Message}";
                 _logger.LogError(ex, "Error al deshabilitar restaurante");
+                result.IsSuccess = false;
+                result.Message = $"Error al deshabilitar restaurante: {ex.Message}";
             }
 
             return result;
@@ -136,7 +144,7 @@ namespace SGR.Persistence.Repositories
                 using var connection = new MySqlConnection(_connectionString);
                 using var command = new MySqlCommand("sp_GetRestaurantById", connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Id", id);
+                command.Parameters.AddWithValue("@p_Id", id);
 
                 await connection.OpenAsync();
                 using var reader = await command.ExecuteReaderAsync();

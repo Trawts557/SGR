@@ -71,7 +71,7 @@ namespace SGR.Persistence.Repositories
                 using var command = new MySqlCommand("sp_UpdateReservation", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@p_Id", dto.IdReservation);
+                command.Parameters.AddWithValue("@p_IdReservation", dto.IdReservation);
                 command.Parameters.AddWithValue("@p_Status", dto.Status);
                 command.Parameters.AddWithValue("@p_UpdatedBy", dto.UpdatedBy);
 
@@ -108,7 +108,7 @@ namespace SGR.Persistence.Repositories
                 using var command = new MySqlCommand("sp_CancelReservation", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@p_Id", dto.IdReservation);
+                command.Parameters.AddWithValue("@p_IdReservation", dto.IdReservation);
                 command.Parameters.AddWithValue("@p_DeletedBy", dto.DeletedBy);
 
                 var pResult = new MySqlParameter("@pResult", MySqlDbType.VarChar, 255)
@@ -187,7 +187,7 @@ namespace SGR.Persistence.Repositories
                 using var command = new MySqlCommand("sp_GetReservationById", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@p_Id", id);
+                command.Parameters.AddWithValue("@p_IdReservation", id);
 
                 await connection.OpenAsync();
                 using var reader = await command.ExecuteReaderAsync();
