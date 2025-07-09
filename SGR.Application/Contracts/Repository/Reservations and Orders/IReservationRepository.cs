@@ -16,6 +16,8 @@ namespace SGR.Application.Contracts.Repository.Reservations_and_Orders
         Task<OperationResult> CancelAsync(CancelReservationDTO dto);
         Task<OperationResult<IEnumerable<GetReservationDTO>>> GetAllAsync();
         Task<OperationResult<GetReservationDTO>> GetByIdAsync(int id);
-        
+        Task<bool> HasOverlappingReservationAsync(int restaurantId, DateTime reservationDate);
+
+
     }
 }

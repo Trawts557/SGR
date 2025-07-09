@@ -211,6 +211,24 @@ namespace SGR.Persistence.Repositories
 
             return result;
         }
+        public async Task<bool> ExistsByNameAsync(string name)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(_connectionString);
+                using var command = new MySqlCommand("SELECT COUNT(*) FROM restaurant WHERE Name = @name AND IsDeleted = 0", connection);
+                command.Parameters.AddWithValue("@name", name);
+
+                await connection.OpenAsync();
+                var count = Convert.ToInt32(await command.ExecuteScalarAsync());
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error verificando existencia de restaurante por nombre.");
+                return false;
+            }
+        }
 
     }
 }

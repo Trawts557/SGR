@@ -222,6 +222,29 @@ namespace SGR.Persistence.Repositories
             return result;
         }
 
+        public async Task<bool> HasOverlappingReservationAsync(int restaurantId, DateTime reservationDate)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(_connectionString);
+                using var command = new MySqlCommand("sp_CheckReservationOverlap", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@p_RestaurantId", restaurantId);
+                command.Parameters.AddWithValue("@p_ReservationDate", reservationDate);
+
+                await connection.OpenAsync();
+                var result = await command.ExecuteScalarAsync();
+
+                return Convert.ToInt32(result) > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error en HasOverlappingReservationAsync");
+                return true;
+            }
+        }
+
 
     }
 }

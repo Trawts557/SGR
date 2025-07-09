@@ -16,5 +16,8 @@ namespace SGR.Application.Interfaces.Repository
         Task<OperationResult> AddAsync(CreateRestaurantDTO createRestaurantDTO);
         Task<OperationResult> UpdateAsync(ModifyRestaurantDTO modifyRestaurantDTO);
         Task<OperationResult> DeleteAsync(DisableRestaurantDTO disableRestaurantDTO);
+        Task<bool> ExistsByNameAsync(string name);
+
+
     }
 }
