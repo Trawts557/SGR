@@ -16,17 +16,17 @@ namespace SGR.API.Controllers
             _restaurantService = restaurantService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateRestaurantDTO dto)
-        {
-            var result = await _restaurantService.AddAsync(dto);
-            return Ok(result);
-        }
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var result = await _restaurantService.GetAllAsync();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateRestaurantDTO dto)
+        {
+            var result = await _restaurantService.AddAsync(dto);
             return Ok(result);
         }
 

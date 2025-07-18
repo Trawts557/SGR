@@ -12,17 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 //Controlador Restaurant 
 builder.Services.AddRestaurantDependency();
-builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
-
 
 //Controlador Reservation
 builder.Services.AddReservationDependency();
-builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
 
 //Controlador MenuCategory
 builder.Services.AddMenuCategoryDependency();
-builder.Services.AddScoped<IMenuCategoryRepository, MenuCategoryRepository>();
 
 
 //Controlador User

@@ -12,22 +12,5 @@ namespace SGR.Persistence.IContext
         public SGR_DB(DbContextOptions<SGR_DB> options)
             : base(options) { }
 
-        public DbSet<Restaurant> Restaurants { get; set; }
-        public DbSet<MenuCategory> MenuCategories { get; set; }
-        public DbSet<Product> Products { get; set; }
-
-        public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<FoodOrder> FoodOrders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
-
-        public DbSet<Payment> Payments { get; set; }
-        public DbSet<Review> Reviews { get; set; }
-
-        public DbSet<Admin> Admins { get; set; }
-        public DbSet<Owner> Owners { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-
-        public DbSet<Notification> Notifications { get; set; }
-        public DbSet<Analytics> Analytics { get; set; }
     }
 }
