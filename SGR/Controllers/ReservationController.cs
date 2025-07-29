@@ -2,7 +2,6 @@
 using SGR.Application.Contracts.Repository.Reservations_and_Orders;
 using SGR.Application.Dtos.Reservation_and_Orders;
 using SGR.Domain.Base;
-using SGR.Persistence.Repositories;
 
 namespace SGR.API.Controllers
 {
@@ -20,7 +19,7 @@ namespace SGR.API.Controllers
         }
 
         // GET: api/Reservation
-        [HttpGet]
+        [HttpGet("GetAllReservations")]
         public async Task<ActionResult<OperationResult<IEnumerable<GetReservationDTO>>>> GetAllReservations()
         {
             var result = await _reservationRepository.GetAllAsync();
@@ -28,28 +27,28 @@ namespace SGR.API.Controllers
         }
 
         // GET: api/Reservation/{id}
-        [HttpGet("{id}")]
+        [HttpGet("GetReservationBy{id}")]
         public async Task<ActionResult<OperationResult<GetReservationDTO>>> GetReservationById(int id)
         {
             var result = await _reservationRepository.GetByIdAsync(id);
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("CreateReservation")]
         public async Task<IActionResult> Create([FromBody] CreateReservationDTO dto)
         {
             var result = await _reservationRepository.AddAsync(dto);
             return Ok(result);
         }
 
-        [HttpPut]
+        [HttpPut("ModifyReservation")]
         public async Task<IActionResult> Update([FromBody] ModifyReservationDTO dto)
         {
             var result = await _reservationRepository.UpdateAsync(dto);
             return Ok(result);
         }
 
-        [HttpDelete]
+        [HttpDelete("CancelReservation")]
         public async Task<IActionResult> Cancel([FromBody] CancelReservationDTO dto)
         {
             var result = await _reservationRepository.CancelAsync(dto);

@@ -21,7 +21,7 @@ namespace SGR.Persistence.Repositories
 
             _logger = logger;
         }
-
+        
         public async Task<OperationResult> AddAsync(CreateMenuCategoryDTO dto)
         {
             var result = new OperationResult();

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SGR.Application.Dtos.Restaurant;
 using SGR.Application.Contracts.BusinessLogic;
-using SGR.Domain.Base;
 
 namespace SGR.API.Controllers
 {
@@ -16,35 +15,36 @@ namespace SGR.API.Controllers
             _restaurantService = restaurantService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllRestaurants")]
         public async Task<IActionResult> GetAll()
         {
             var result = await _restaurantService.GetAllAsync();
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("CreateRestaurant")]
         public async Task<IActionResult> Create([FromBody] CreateRestaurantDTO dto)
         {
             var result = await _restaurantService.AddAsync(dto);
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpGet("GetRestaurantById")]
+        public async Task<IActionResult> GetById([FromQuery] int id)
         {
             var result = await _restaurantService.GetByIdAsync(id);
             return Ok(result);
         }
 
-        [HttpPut]
+
+        [HttpPut("ModifyRestaurant")]
         public async Task<IActionResult> Update([FromBody] ModifyRestaurantDTO dto)
         {
             var result = await _restaurantService.UpdateAsync(dto);
             return Ok(result);
         }
 
-        [HttpDelete]
+        [HttpDelete("DisableRestaurant")]
         public async Task<IActionResult> Delete([FromBody] DisableRestaurantDTO dto)
         {
             var result = await _restaurantService.DeleteAsync(dto);

@@ -10,5 +10,6 @@ public static class MenuCategoryDependency
     {
         service.AddScoped<IMenuCategoryRepository, MenuCategoryRepository>();
         service.AddScoped<IMenuCategoryService, MenuCategoryService>();
+
     }
 }

@@ -1,5 +1,4 @@
-﻿using SGR.Application.Contracts.Repository;
-using SGR.Application.Dtos.Restaurant;
+﻿using SGR.Application.Dtos.Restaurant;
 using SGR.Application.Interfaces.Repository;
 using SGR.Domain.Base;
 

@@ -1,32 +1,38 @@
-﻿// aqui no debe decir DOMAIN.ENTITIES
-@model IEnumerable<SGR.Domain.Entities.Restaurants_and_Products.Restaurant>
+﻿@model IEnumerable<SGR.Web.Models.RestaurantModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Home";
 }
 
-<h1>Index</h1>
+<h1>Existent Restaurants</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create new restaurant</a>
 </p>
+
+@if (!Model.Any())
+{
+    <p><strong>No restaurant found.</strong></p>
+}
+
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.IdRestaurant)
+                @Html.DisplayNameFor(model => model.name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayNameFor(model => model.idOwner)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Specialty)
+                @Html.DisplayNameFor(model => model.idRestaurant)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdOwner)
+                @Html.DisplayNameFor(model => model.createdAt)
             </th>
             <th></th>
         </tr>
@@ -35,26 +41,27 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.IdRestaurant)
+                @Html.DisplayFor(modelItem => item.name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Address)
+                @Html.DisplayFor(modelItem => item.idOwner)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Specialty)
+                @Html.DisplayFor(modelItem => item.idRestaurant)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdOwner)
+                @Html.DisplayFor(modelItem => item.createdAt)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "Edit", new { id = item.idRestaurant }) |
+                @Html.ActionLink("Details", "Details", new { id = item.idRestaurant }) |
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+

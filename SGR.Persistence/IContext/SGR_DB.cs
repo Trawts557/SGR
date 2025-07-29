@@ -12,5 +12,14 @@ namespace SGR.Persistence.IContext
         public SGR_DB(DbContextOptions<SGR_DB> options)
             : base(options) { }
 
+        //Db set para las tablas que manipula RestaurantRepository
+        public DbSet<Restaurant> Restaurants { get; set; }
+
+        //DB Set para las tablas que manipula UserRepository
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Owner> Owners { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+
     }
+
 }

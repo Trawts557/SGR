@@ -27,8 +27,12 @@ namespace SGR.Application.Test
 
             var result = await _service.GetAllAsync();
 
-            Assert.Single(result);
-            Assert.Equal("Pizza Hut", result[0].Name);
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Data);
+            Assert.Single(result.Data!);
+            var list = result.Data!.ToList();
+            Assert.Equal("Pizza Hut", list[0].Name);
+
         }
 
         [Fact]
@@ -42,8 +46,11 @@ namespace SGR.Application.Test
 
             await _service.AddAsync(dto);
 
-            var list = await _service.GetAllAsync();
-            Assert.Contains(list, r => r.Name == "Burger King");
+            var listResult = await _service.GetAllAsync();
+
+            Assert.True(listResult.IsSuccess);
+            Assert.NotNull(listResult.Data);
+            Assert.Contains(listResult.Data!, r => r.Name == "Burger King");
         }
     }
 }

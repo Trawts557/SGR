@@ -1,7 +1,5 @@
 ﻿using SGR.Application.Dtos.Restaurant;
-using SGR.Application.Dtos.Restaurant_and_Products.MenuCategory;
 using SGR.Tests.Mocks;
-using Xunit;
 
 namespace SGR.Tests.Repositories
 {

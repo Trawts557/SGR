@@ -1,7 +1,5 @@
-using SGR.Application.Dtos.MenuCategory;
 using SGR.Application.Dtos.Restaurant;
 using SGR.Application.Services;
-using SGR.Application.Services.Implementations;
 using SGR.Tests.Mocks;
 using Xunit;
 
@@ -13,7 +11,7 @@ namespace SGR.Application.Test
 
         public MenuCategoryServiceTests()
         {
-            var mockRepo = new MenuCategoryRepositoryMock(); 
+            var mockRepo = new MenuCategoryRepositoryMock();
             _service = new MenuCategoryService(mockRepo, null!);
         }
 
@@ -30,7 +28,9 @@ namespace SGR.Application.Test
             await _service.AddAsync(dto);
             var result = await _service.GetAllAsync();
 
-            Assert.Contains(result, c => c.Name == "Postres");
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Data);
+            Assert.Contains(result.Data!, c => c.Name == "Postres");
         }
 
         [Fact]
@@ -45,8 +45,11 @@ namespace SGR.Application.Test
 
             var result = await _service.GetAllAsync();
 
-            Assert.Single(result);
-            Assert.Equal("Bebidas", result[0].Name);
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Data);
+            Assert.Single(result.Data!);
+            var list = result.Data!.ToList();
+            Assert.Equal("Bebidas", list[0].Name);
         }
     }
 }

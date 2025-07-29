@@ -2,11 +2,9 @@
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using SGR.Application.Contracts.Repository;
-using SGR.Application.Dtos.Restaurant_and_Products.MenuCategory;
 using SGR.Application.Dtos.User.SGR.Application.Dtos.Users;
 using SGR.Application.Dtos.Users;
 using SGR.Domain.Base;
-using System.Configuration;
 using System.Data;
 
 namespace SGR.Persistence.Repositories
