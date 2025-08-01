@@ -4,7 +4,7 @@
     {
         public string? name { get; set; }
         public string? description { get; set; }
-        public int idOwner { get; set; }
+        public int? idOwner { get; set; }
         public int idRestaurant { get; set; }
         public DateTime createdAt { get; set; }
     }

@@ -14,6 +14,7 @@
         public bool isSuccess { get; set; }
         public string? message { get; set; }
         public List<MenuCategoryModel>? data { get; set; }
+
     }
     public class GetMenuCategoryResponse
     {   

@@ -1,7 +1,14 @@
+using SGR.Web.Services;
+using SGR.Web.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Refactoring de Restaurant y MenuCategory en consumo api
+builder.Services.AddHttpClient<IRestaurantService, RestaurantService>();
+builder.Services.AddHttpClient<IMenuCategoryService, MenuCategoryService>();
 
 var app = builder.Build();
 
