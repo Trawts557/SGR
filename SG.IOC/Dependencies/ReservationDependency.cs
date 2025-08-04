@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SGR.Application.Contracts.BusinessLogic;
-using SGR.Application.Contracts.Repository;
 using SGR.Application.Contracts.Repository.Reservations_and_Orders;
 using SGR.Application.Services;
 using SGR.Persistence.Repositories;

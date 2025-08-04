@@ -1,25 +1,39 @@
 ﻿using SGR.Web.Models;
 using SGR.Web.Services.Interfaces;
-using System.Text;
 using System.Text.Json;
+using System.Net.Http.Json;
 
 namespace SGR.Web.Services
 {
     public class MenuCategoryService : IMenuCategoryService
     {
         private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
-        public MenuCategoryService(HttpClient httpClient)
+        public MenuCategoryService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://localhost:7106/api/");
+            _configuration = configuration;
+
+            var baseUrl = _configuration["ApiSettings:BaseUrl"];
+            _httpClient.BaseAddress = new Uri(baseUrl!);
         }
 
         public async Task<List<MenuCategoryModel>> GetAllAsync()
         {
             var response = await _httpClient.GetAsync("MenuCategory/GetAllMenuCategory");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<MenuCategoryModel>();
+            }
+
             var content = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<GetAllMenuCategoryResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            var result = JsonSerializer.Deserialize<BaseResponse<List<MenuCategoryModel>>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
             return result?.data ?? new List<MenuCategoryModel>();
         }
@@ -27,27 +41,31 @@ namespace SGR.Web.Services
         public async Task<MenuCategoryModel?> GetByIdAsync(int id)
         {
             var response = await _httpClient.GetAsync($"MenuCategory/GetMenuCategoryById?id={id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
             var content = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<GetMenuCategoryResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            var result = JsonSerializer.Deserialize<BaseResponse<MenuCategoryModel>>(content, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
 
             return result?.data;
         }
 
         public async Task<bool> CreateAsync(MenuCategoryModel model)
         {
-            var json = JsonSerializer.Serialize(model);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync("MenuCategory/CreateMenuCategory", content);
+            var response = await _httpClient.PostAsJsonAsync("MenuCategory/CreateMenuCategory", model);
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> UpdateAsync(MenuCategoryModel model)
         {
-            var json = JsonSerializer.Serialize(model);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PutAsync("MenuCategory/ModifyMenuCategory", content);
+            var response = await _httpClient.PutAsJsonAsync("MenuCategory/ModifyMenuCategory", model);
             return response.IsSuccessStatusCode;
         }
     }

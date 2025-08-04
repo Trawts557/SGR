@@ -30,13 +30,6 @@ namespace SGR.Persistence.Repositories
             {
                 _logger.LogInformation("Creando nueva categoría de menú.");
 
-                if (dto == null || string.IsNullOrWhiteSpace(dto.Name))
-                {
-                    result.IsSuccess = false;
-                    result.Message = "Nombre de categoría inválido.";
-                    return result;
-                }
-
                 using var connection = new MySqlConnection(_connectionString);
                 using var command = new MySqlCommand("sp_CreateMenuCategory", connection);
                 command.CommandType = CommandType.StoredProcedure;
@@ -260,7 +253,6 @@ namespace SGR.Persistence.Repositories
 
             return result;
         }
-
 
     }
 }

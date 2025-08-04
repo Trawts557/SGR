@@ -61,6 +61,7 @@ namespace SGR.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MenuCategoryModel model)
         {
+            
             if (!ModelState.IsValid)
             {
                 return View(model);

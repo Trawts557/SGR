@@ -5,7 +5,7 @@ namespace SGR.Application.Dtos.Restaurant
     {
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public int IdOwner { get; set; }
+        public int OwnerId { get; set; }
         public int IdRestaurant { get; set; }
         public DateTime CreatedAt { get; set; }
 
@@ -15,7 +15,7 @@ namespace SGR.Application.Dtos.Restaurant
         {
             Name = name;
             Description = description;
-            IdOwner = idOwner;
+            OwnerId = idOwner;
             IdRestaurant = idRestaurant;
             CreatedAt = createdAt;
         }

@@ -83,7 +83,7 @@ namespace SGR.Web.Controllers
         // POST: RestaurantController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(RestaurantEditModel model)
+        public async Task<IActionResult> Edit(RestaurantModel model)
         {
             if (!ModelState.IsValid)
             {

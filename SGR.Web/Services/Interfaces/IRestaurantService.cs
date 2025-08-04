@@ -7,6 +7,6 @@ namespace SGR.Web.Services.Interfaces
         Task<List<RestaurantModel>> GetAllAsync();
         Task<RestaurantModel?> GetByIdAsync(int id);
         Task<bool> CreateAsync(RestaurantModel model);
-        Task<bool> UpdateAsync(RestaurantEditModel model);
+        Task<bool> UpdateAsync(RestaurantModel model);
     }
 }
